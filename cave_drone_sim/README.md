@@ -72,7 +72,7 @@ cave_generator_node ──/cave/model_sdf──► [Gazebo]
 ```bash
 # 1. Clone and build
 git clone https://github.com/your-org/cave_drone_sim.git && cd cave_drone_sim
-colcon build --symlink-install && source install/setup.bash
+colcon build --base-paths src --symlink-install && source src/install/setup.bash
 
 # 2. Generate a cave and launch the full demo
 ros2 launch cave_drone_sim full_demo.launch.py seed:=42
@@ -119,8 +119,8 @@ cd ~/ros2_ws && colcon build --packages-select fast_lio
 
 ```bash
 cd /path/to/cave_drone_sim
-colcon build --symlink-install
-source install/setup.bash
+colcon build --base-paths src --symlink-install
+source src/install/setup.bash
 ```
 
 ---

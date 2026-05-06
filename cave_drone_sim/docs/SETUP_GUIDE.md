@@ -244,11 +244,11 @@ sudo apt install \
     -y
 
 # Build the workspace
-colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+colcon build --base-paths src --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 # Source the workspace
-source install/setup.bash
-echo "source ~/cave_drone_sim/install/setup.bash" >> ~/.bashrc
+source src/install/setup.bash
+echo "source ~/cave_drone_sim/src/install/setup.bash" >> ~/.bashrc
 ```
 
 > **Note on `--symlink-install`:** This creates symbolic links instead of copies for Python files, allowing you to edit source files without rebuilding. Recommended during development. For a clean release build, omit this flag.
@@ -358,10 +358,10 @@ RUN pip3 install numpy scipy scikit-image scikit-learn trimesh open3d noise evo
 # Build CaveDroneSim (FAST-LIO2 installed separately)
 WORKDIR /ros2_ws
 COPY . /ros2_ws/src/cave_drone_sim/
-RUN colcon build --symlink-install
+RUN colcon build --base-paths src --symlink-install
 
 SHELL ["/bin/bash", "-c"]
-RUN echo "source /ros2_ws/install/setup.bash" >> /root/.bashrc
+RUN echo "source /ros2_ws/src/install/setup.bash" >> /root/.bashrc
 ```
 
 ```bash
