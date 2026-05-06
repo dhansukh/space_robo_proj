@@ -1,4 +1,4 @@
-# Space Robo Project - Cave Drone Simulation
+# Cave Drone Simulation
 
 This repository contains the `cave_drone_sim` full-stack autonomous drone exploration platform for GPS-denied underground cave environments. It features procedurally-generated 3D cave worlds, LiDAR-inertial SLAM, and a frontier-based exploration planner.
 
