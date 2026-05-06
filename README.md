@@ -6,6 +6,23 @@ Included in this repository is the pre-generated `cave_flat` dataset, so you can
 
 ---
 
+## Demo & Gallery
+
+**Watch the demo video of the Cave Drone Simulation in action:**  
+[📺 Watch on YouTube](https://youtu.be/tOKQjDEcU40)
+
+### Generated Cave Maps & SLAM
+![Gazebo Map](cave_generation_slam_maping_photos/gazebo_map.png)
+![SLAM Recreation of Gazebo Map](cave_generation_slam_maping_photos/slam_recreation_of_gazebo_map.png)
+
+### Procedural Generation Breakdown
+![Cave Generation Composite](cave_generation_slam_maping_photos/cave_generation_composite.png)
+![Cave Generation Graph](cave_generation_slam_maping_photos/cave_generation_graph.png)
+![Cave Generation SDF Slice](cave_generation_slam_maping_photos/cave_generation_sdf_slice.png)
+![Cave Generation Splines](cave_generation_slam_maping_photos/cave_generation_splines.png)
+
+---
+
 ## 1. Quick Start: Running the Full SLAM Pipeline
 
 To run the pipeline using the pre-generated `cave_flat` map, open four separate terminals and run the following commands in order from the `cave_drone_sim/` workspace root:
