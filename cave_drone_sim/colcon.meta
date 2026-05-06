@@ -1,0 +1,16 @@
+{
+  "names": {
+    "cave_generator": {
+      "cmake-args": []
+    },
+    "drone_bringup": {
+      "cmake-args": []
+    },
+    "slam_pipeline": {
+      "cmake-args": []
+    },
+    "exploration_planner": {
+      "cmake-args": []
+    }
+  }
+}

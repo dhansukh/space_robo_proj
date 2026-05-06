@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  x500_cave/model.sdf
+  ====================
+  PX4 x500 quadrotor extended with cave exploration sensors.
+
+  Structure:
+    - Includes the stock PX4 x500_base model (body + rotors + core sensors)
+    - Adds 4x MulticopterMotorModel plugins (from PX4 x500)
+    - Adds sensor links: lidar_link, depth_camera_link
+    - Each sensor link is attached to base_link via fixed joints
+
+  Sensors from x500_base (DO NOT duplicate):
+    - IMU (250 Hz), Barometer (50 Hz), Magnetometer (100 Hz), GPS/NavSat
+
+  Additional sensors (cave exploration):
+    - 3D LiDAR: 1800 H-samples × 16 V-channels, 360° FOV, 0.1–30 m range, 10 Hz
+    - Depth camera: 640×480, 87° HFOV, 0.1–10 m, 15 Hz
+
+  Usage:
+    Set PX4_SIM_MODEL=x500_cave or copy this to
+    ~/PX4-Autopilot/Tools/simulation/gz/models/x500_cave/
+-->
+<sdf version="1.9">
+  <model name="x500_cave">
+
+    <!-- ================================================================
+         Include the stock PX4 x500 base frame (body + 4 rotors)
+         ================================================================ -->
+    <include merge="true">
+      <uri>model://x500_base</uri>
+    </include>
+
+    <!-- ================================================================
+         MulticopterMotorModel plugins (identical to PX4 x500/model.sdf)
+         ================================================================ -->
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_0_joint</jointName>
+      <linkName>rotor_0</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>0</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_1_joint</jointName>
+      <linkName>rotor_1</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>1</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_2_joint</jointName>
+      <linkName>rotor_2</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>2</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+    <plugin filename="gz-sim-multicopter-motor-model-system"
+            name="gz::sim::systems::MulticopterMotorModel">
+      <jointName>rotor_3_joint</jointName>
+      <linkName>rotor_3</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>1000.0</maxRotVelocity>
+      <motorConstant>8.54858e-06</motorConstant>
+      <momentConstant>0.016</momentConstant>
+      <commandSubTopic>command/motor_speed</commandSubTopic>
+      <motorNumber>3</motorNumber>
+      <rotorDragCoefficient>8.06428e-05</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <motorType>velocity</motorType>
+    </plugin>
+
+    <!-- ================================================================
+         3D LiDAR — VLP-16 style, mounted on top of drone body
+         ================================================================ -->
+    <link name="lidar_link">
+      <pose>0 0 0.11 0 0 0</pose>   <!-- 0.11 m above base_link CoM -->
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>  <ixy>0</ixy>  <ixz>0</ixz>
+          <iyy>0.000001</iyy>  <iyz>0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+      <visual name="lidar_visual">
+        <geometry>
+          <cylinder>
+            <radius>0.0516</radius>
+            <length>0.0717</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.4 0.4 0.4 1</ambient>
+          <diffuse>0.5 0.5 0.5 1</diffuse>
+        </material>
+      </visual>
+      <collision name="lidar_collision">
+        <geometry>
+          <sphere>
+            <radius>0.06</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <sensor name="lidar" type="gpu_lidar">
+        <update_rate>10</update_rate>
+        <topic>/lidar/points</topic>
+        <gz_frame_id>lidar_link</gz_frame_id>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>1800</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159265</min_angle>
+              <max_angle> 3.14159265</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>16</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.26179939</min_angle>  <!-- -15 deg -->
+              <max_angle> 0.26179939</max_angle>  <!--  15 deg -->
+            </vertical>
+          </scan>
+          <range>
+            <min>0.1</min>
+            <max>30.0</max>
+            <resolution>0.001</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.02</stddev>
+          </noise>
+        </lidar>
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+      </sensor>
+    </link>
+    <joint name="lidar_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>lidar_link</child>
+    </joint>
+
+    <!-- ================================================================
+         Depth Camera — forward-facing, pitched 10° downward
+         ================================================================ -->
+    <link name="depth_camera_link">
+      <pose>0.15 0 -0.02 0 0.1745329 0</pose>  <!-- 15cm fwd, 2cm down, 10° pitch -->
+      <inertial>
+        <mass>0.001</mass>
+        <inertia>
+          <ixx>0.000001</ixx>  <ixy>0</ixy>  <ixz>0</ixz>
+          <iyy>0.000001</iyy>  <iyz>0</iyz>
+          <izz>0.000001</izz>
+        </inertia>
+      </inertial>
+      <visual name="camera_visual">
+        <geometry>
+          <box><size>0.04 0.09 0.025</size></box>
+        </geometry>
+        <material>
+          <ambient>0.1 0.1 0.1 1</ambient>
+          <diffuse>0.15 0.15 0.15 1</diffuse>
+        </material>
+      </visual>
+      <collision name="camera_collision">
+        <geometry>
+          <sphere>
+            <radius>0.04</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <sensor name="depth_camera" type="depth_camera">
+        <update_rate>15</update_rate>
+        <topic>/depth_camera</topic>
+        <gz_frame_id>depth_camera_link</gz_frame_id>
+        <camera>
+          <horizontal_fov>1.5184</horizontal_fov>  <!-- 87 deg -->
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R_FLOAT32</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>10.0</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </camera>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+      </sensor>
+    </link>
+    <joint name="depth_camera_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>depth_camera_link</child>
+    </joint>
+
+    <!-- ================================================================
+         NOTE: IMU, barometer, magnetometer, and GPS sensors are provided
+         by the x500_base model on base_link. Do NOT add duplicates here.
+         ================================================================ -->
+    <!-- Prop guard is now embedded directly in x500_base's base_link
+         (collision name="prop_guard") to avoid mass-ratio instability. -->
+
+  </model>
+</sdf>
+

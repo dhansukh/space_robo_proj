@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# @name Gazebo x500_cave
+#
+# @type Quadrotor
+#
+# PX4 airframe for x500 with cave exploration sensors.
+# Based on 4001_gz_x500 but configured for autonomous cave operation.
+#
+
+. ${R}etc/init.d/rc.mc_defaults
+
+PX4_SIMULATOR=${PX4_SIMULATOR:=gz}
+PX4_GZ_WORLD=${PX4_GZ_WORLD:=cave_world}
+PX4_SIM_MODEL=${PX4_SIM_MODEL:=x500_cave}
+
+param set-default SIM_GZ_EN 1
+
+param set-default CA_AIRFRAME 0
+param set-default CA_ROTOR_COUNT 4
+
+param set-default CA_ROTOR0_PX 0.13
+param set-default CA_ROTOR0_PY 0.22
+param set-default CA_ROTOR0_KM 0.05
+
+param set-default CA_ROTOR1_PX -0.13
+param set-default CA_ROTOR1_PY -0.20
+param set-default CA_ROTOR1_KM 0.05
+
+param set-default CA_ROTOR2_PX 0.13
+param set-default CA_ROTOR2_PY -0.22
+param set-default CA_ROTOR2_KM -0.05
+
+param set-default CA_ROTOR3_PX -0.13
+param set-default CA_ROTOR3_PY 0.20
+param set-default CA_ROTOR3_KM -0.05
+
+param set-default SIM_GZ_EC_FUNC1 101
+param set-default SIM_GZ_EC_FUNC2 102
+param set-default SIM_GZ_EC_FUNC3 103
+param set-default SIM_GZ_EC_FUNC4 104
+
+param set-default SIM_GZ_EC_MIN1 150
+param set-default SIM_GZ_EC_MIN2 150
+param set-default SIM_GZ_EC_MIN3 150
+param set-default SIM_GZ_EC_MIN4 150
+
+param set-default SIM_GZ_EC_MAX1 1000
+param set-default SIM_GZ_EC_MAX2 1000
+param set-default SIM_GZ_EC_MAX3 1000
+param set-default SIM_GZ_EC_MAX4 1000
+
+# Hover throttle calibration (from stock x500)
+param set-default MPC_THR_HOVER 0.60
+
+# --- Autonomous / SITL operation parameters ---
+
+# Allow QGC virtual joystick as RC input
+# 0 = RC only, 1 = Virtual RC by joystick (QGC), 4 = Stick input disabled
+param set-default COM_RC_IN_MODE 1
+
+# RC loss failsafe: disabled for autonomous operation
+# (0 = disabled, 1 = hold, 2 = return, 3 = land)
+param set-default NAV_RCL_ACT 0
+
+# Data link loss failsafe: disabled for SITL
+param set-default NAV_DLL_ACT 0
+
+# Disarm timeout after landing (0 = no auto-disarm)
+param set-default COM_DISARM_LAND 5
+
+# Allow offboard mode without RC
+# Bitmask: bit0=RC available, bit2=offboard without RC
+param set-default COM_RCL_EXCEPT 4

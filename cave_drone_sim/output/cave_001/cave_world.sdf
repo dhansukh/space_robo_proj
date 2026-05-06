@@ -1,0 +1,158 @@
+            <?xml version="1.0"?>
+            <sdf version="1.9">
+              <world name="cave_world">
+
+                <!-- Physics engine configuration -->
+                <physics name="default_physics" default="true" type="ode">
+                  <max_step_size>0.001</max_step_size>
+                  <real_time_factor>1.0</real_time_factor>
+                  <real_time_update_rate>1000</real_time_update_rate>
+                </physics>
+
+                <!-- Gravity must be a direct child of <world>, not <physics> -->
+                <gravity>0 0 -9.81</gravity>
+
+                <!-- Magnetic field (required for PX4 magnetometer) -->
+                <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+                <atmosphere type="adiabatic"/>
+
+                <!-- GPS reference frame (required for NavSat) -->
+                <spherical_coordinates>
+                  <surface_model>EARTH_WGS84</surface_model>
+                  <world_frame_orientation>ENU</world_frame_orientation>
+                  <latitude_deg>47.397971057728974</latitude_deg>
+                  <longitude_deg>8.546163739800146</longitude_deg>
+                  <elevation>0</elevation>
+                </spherical_coordinates>
+
+                <!-- System plugins (from PX4 server.config) -->
+                <plugin filename="gz-sim-physics-system"
+                        name="gz::sim::systems::Physics">
+                </plugin>
+                <plugin filename="gz-sim-user-commands-system"
+                        name="gz::sim::systems::UserCommands">
+                </plugin>
+                <plugin filename="gz-sim-scene-broadcaster-system"
+                        name="gz::sim::systems::SceneBroadcaster">
+                </plugin>
+                <plugin filename="gz-sim-contact-system"
+                        name="gz::sim::systems::Contact">
+                </plugin>
+                <plugin filename="gz-sim-imu-system"
+                        name="gz::sim::systems::Imu">
+                </plugin>
+                <plugin filename="gz-sim-air-pressure-system"
+                        name="gz::sim::systems::AirPressure">
+                </plugin>
+                <plugin filename="gz-sim-air-speed-system"
+                        name="gz::sim::systems::AirSpeed">
+                </plugin>
+                <plugin filename="gz-sim-apply-link-wrench-system"
+                        name="gz::sim::systems::ApplyLinkWrench">
+                </plugin>
+                <plugin filename="gz-sim-navsat-system"
+                        name="gz::sim::systems::NavSat">
+                </plugin>
+                <plugin filename="gz-sim-magnetometer-system"
+                        name="gz::sim::systems::Magnetometer">
+                </plugin>
+                <plugin filename="gz-sim-sensors-system"
+                        name="gz::sim::systems::Sensors">
+                  <render_engine>ogre2</render_engine>
+                </plugin>
+
+                <!-- Scene ambient lighting (dim for cave atmosphere) -->
+                <scene>
+                  <ambient>0.05 0.05 0.08 1</ambient>
+                  <background>0.0 0.0 0.0 1</background>
+                  <shadows>false</shadows>
+                </scene>
+
+                <!-- Directional sun (weak, to simulate faint surface light) -->
+                <light name="sun" type="directional">
+                  <pose>0 0 10 0 0 0</pose>
+                  <diffuse>0.1 0.1 0.15 1</diffuse>
+                  <specular>0.02 0.02 0.02 1</specular>
+                  <direction>0.1 0.1 -1</direction>
+                  <cast_shadows>false</cast_shadows>
+                </light>
+
+                <light name="point_light_0" type="point">
+  <pose>-5.0 0.0 8.38713436126709 0 0 0</pose>
+  <diffuse>0.7 0.65 0.55 1</diffuse>
+  <specular>0.1 0.1 0.1 1</specular>
+  <attenuation>
+    <range>25</range>
+    <constant>0.4</constant>
+    <linear>0.05</linear>
+    <quadratic>0.001</quadratic>
+  </attenuation>
+  <cast_shadows>false</cast_shadows>
+</light>
+
+<light name="point_light_1" type="point">
+  <pose>5.0 0.0 8.38713436126709 0 0 0</pose>
+  <diffuse>0.7 0.65 0.55 1</diffuse>
+  <specular>0.1 0.1 0.1 1</specular>
+  <attenuation>
+    <range>25</range>
+    <constant>0.4</constant>
+    <linear>0.05</linear>
+    <quadratic>0.001</quadratic>
+  </attenuation>
+  <cast_shadows>false</cast_shadows>
+</light>
+
+
+                <!-- Cave model (lifted so lowest point is at ground plane z=0) -->
+                <include>
+                  <uri>/home/smalld/Downloads/space_robo_proj/cave_drone_sim/output/cave_001/cave_model_001</uri>
+                  <name>cave_model_001</name>
+                  <pose>0 0 8.3871 0 0 0</pose>
+                </include>
+
+                <!-- Ground plane below the cave -->
+<model name="ground_plane">
+  <static>true</static>
+  <link name="ground_link">
+    <collision name="ground_collision">
+      <geometry>
+        <plane>
+          <normal>0 0 1</normal>
+          <size>200 200</size>
+        </plane>
+      </geometry>
+    </collision>
+    <visual name="ground_visual">
+      <geometry>
+        <plane>
+          <normal>0 0 1</normal>
+          <size>200 200</size>
+        </plane>
+      </geometry>
+      <material>
+        <ambient>0.15 0.12 0.1 1</ambient>
+        <diffuse>0.3 0.25 0.2 1</diffuse>
+      </material>
+    </visual>
+    <pose>0 0 0 0 0 0</pose>
+  </link>
+</model>
+
+
+                <!-- Drone spawn point marker (static invisible box) -->
+                <model name="drone_spawn_point">
+                  <static>true</static>
+                  <pose>11.154143876630698 -37.99913958218664 9.38713436126709 0.0 0.0 0.0</pose>
+                  <link name="spawn_link">
+                    <visual name="spawn_visual">
+                      <geometry>
+                        <box><size>0.1 0.1 0.1</size></box>
+                      </geometry>
+                      <transparency>1.0</transparency>
+                    </visual>
+                  </link>
+                </model>
+
+              </world>
+            </sdf>

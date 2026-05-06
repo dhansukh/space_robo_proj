@@ -1,0 +1,61 @@
+What was broken and how it got fixed                                
+                                                                      
+  1. Wrong Gazebo bridge topics (gz_bridge_px4.yaml)                                 
+  The bridge was configured against the wrong drone model.
+  px4_cave.launch.py uses models/x500_cave/model.sdf (the PX4 SITL    
+  model), but the config had topic names from cave_drone.urdf.xacro (a
+   different model with /drone/ prefix). Two specific errors:         
+  - LiDAR: gpu_lidar sensors publish LaserScan at <topic> and
+  PointCloudPacked at <topic>/points — bridge was subscribed to the   
+  base topic with the wrong message type. Fix: gz_topic_name:      
+  /lidar/points/points                                                
+  - Depth: bridge expected /depth_camera/depth_image sub-channel, but
+  this sensor only publishes on the base /depth_camera topic. Fix:
+  gz_topic_name: /depth_camera                                        
+   
+  2. Depth camera not publishing at all                               
+  <visualize>false</visualize> in x500_cave/model.sdf made the sensor
+  use an offscreen rendering path that silently fails in PX4 SITL +   
+  ogre2. Changed to <visualize>true</visualize> to use the scene
+  render path.                                                        
+                                                            
+  3. RViz TF frame mismatch
+  tf_broadcaster.py only publishes static transforms base_link → 
+  lidar_link / depth_camera_link. There is no odom → base_link dynamic
+   TF (PX4 odometry isn't wired to TF). With fixed frame odom, RViz
+  couldn't locate any sensor frame, so nothing rendered. Fix: changed 
+  fixed frame to base_link.                                 
+
+  4. RViz can't render 32FC1 depth images                             
+  RViz's Image display doesn't handle float32 depth images well — NaN
+  pixels (no-hit rays) dominate and the whole image goes black. Fix:  
+  added depth_colorizer node that converts 32FC1 metres → mono8
+  (0.1m=black, 10m=white).                                            
+                                                            
+  ---
+  Fix the colcon workspace
+                                                                      
+  The root directory has its own package.xml (cave_drone_sim), which
+  breaks the standard ROS2 workspace layout. Colcon finds             
+  cave_drone_sim at the root and stops recursing, missing everything
+  in src/.                                                            
+                                                            
+  Proper fix — move cave_drone_sim into src/ alongside your other     
+  packages:
+                                                                      
+  cd /home/smalld/Downloads/space_robo_proj/cave_drone_sim  
+  mkdir -p src/cave_drone_sim
+  # Move the root package files into src/
+  mv package.xml setup.py setup.cfg cave_drone_sim/ resource/         
+  src/cave_drone_sim/                                                 
+                                                                      
+  After that, colcon build from the workspace root finds all packages 
+  normally.                                                 
+                                                                      
+  If you don't want to restructure, just always use:                  
+  colcon build --base-paths src
+  # or for a specific package:                                        
+  colcon build --base-paths src --packages-select drone_bringup
+                                                                      
+  This tells colcon to search src/ for packages, finding everything
+  inside it regardless of what's at the root.   

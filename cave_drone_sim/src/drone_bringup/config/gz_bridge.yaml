@@ -1,0 +1,94 @@
+# gz_bridge.yaml
+# ==============
+# ros_gz_bridge configuration for the cave drone simulation.
+# Compatible with Gazebo Harmonic (gz-sim 8.x) + ROS 2 Humble/Iron/Jazzy.
+#
+# Conventions:
+#   gz_topic_name  — Gazebo internal topic (snake_case world/model path)
+#   ros_topic_name — ROS 2 topic
+#   direction      — GZ_TO_ROS | ROS_TO_GZ | BIDIRECTIONAL
+#
+# Update the world name ("cave_world") and model name ("cave_drone") if you
+# change the 'world_file' or 'drone_name' launch arguments.
+
+# -------------------------------------------------------------------
+# Clock  (Gazebo simulation time → ROS /clock)
+# -------------------------------------------------------------------
+- ros_topic_name: /clock
+  gz_topic_name: /clock
+  ros_type_name: rosgraph_msgs/msg/Clock
+  gz_type_name: gz.msgs.Clock
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# 3D LiDAR  (PointCloud2)
+# -------------------------------------------------------------------
+- ros_topic_name: /drone/lidar/points
+  gz_topic_name: /world/cave_world/model/cave_drone/link/lidar_link/sensor/lidar/scan/points
+  ros_type_name: sensor_msgs/msg/PointCloud2
+  gz_type_name: gz.msgs.PointCloudPacked
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# Depth Camera — depth image
+# -------------------------------------------------------------------
+- ros_topic_name: /drone/depth_camera/depth
+  gz_topic_name: /world/cave_world/model/cave_drone/link/depth_camera_link/sensor/depth_camera/depth_image
+  ros_type_name: sensor_msgs/msg/Image
+  gz_type_name: gz.msgs.Image
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# Depth Camera — RGB/intensity image
+# -------------------------------------------------------------------
+- ros_topic_name: /drone/depth_camera/image
+  gz_topic_name: /world/cave_world/model/cave_drone/link/depth_camera_link/sensor/depth_camera/image
+  ros_type_name: sensor_msgs/msg/Image
+  gz_type_name: gz.msgs.Image
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# Depth Camera — camera info
+# -------------------------------------------------------------------
+- ros_topic_name: /drone/depth_camera/camera_info
+  gz_topic_name: /world/cave_world/model/cave_drone/link/depth_camera_link/sensor/depth_camera/camera_info
+  ros_type_name: sensor_msgs/msg/CameraInfo
+  gz_type_name: gz.msgs.CameraInfo
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# IMU
+# -------------------------------------------------------------------
+- ros_topic_name: /drone/imu
+  gz_topic_name: /world/cave_world/model/cave_drone/link/imu_link/sensor/imu/imu
+  ros_type_name: sensor_msgs/msg/Imu
+  gz_type_name: gz.msgs.IMU
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# Ground-truth odometry from Gazebo (model pose)
+# Used by DroneController to publish /drone/odom
+# -------------------------------------------------------------------
+- ros_topic_name: /drone/gz/odom
+  gz_topic_name: /world/cave_world/model/cave_drone/odometry
+  ros_type_name: nav_msgs/msg/Odometry
+  gz_type_name: gz.msgs.Odometry
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# cmd_vel  (ROS → Gazebo  for direct twist injection, if needed)
+# -------------------------------------------------------------------
+- ros_topic_name: /cmd_vel
+  gz_topic_name: /cmd_vel
+  ros_type_name: geometry_msgs/msg/Twist
+  gz_type_name: gz.msgs.Twist
+  direction: ROS_TO_GZ
+
+# -------------------------------------------------------------------
+# Wrench command  (ROS → Gazebo ApplyLinkWrench)
+# -------------------------------------------------------------------
+- ros_topic_name: /drone/wrench_cmd
+  gz_topic_name: /world/cave_world/wrench
+  ros_type_name: geometry_msgs/msg/Wrench
+  gz_type_name: gz.msgs.Wrench
+  direction: ROS_TO_GZ

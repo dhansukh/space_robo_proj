@@ -1,0 +1,64 @@
+---
+# default_cave.yaml
+# Default parameters for cave_generator_node.
+# These are loaded by the ROS 2 launch file and can be overridden on the
+# command line:  ros2 launch cave_generator generate_cave.launch.py seed:=99
+
+cave_generator_node:
+  ros__parameters:
+
+    # -----------------------------------------------------------------------
+    # Cave topology
+    # -----------------------------------------------------------------------
+    # Number of nodes (chambers / junctions) in the cave graph.
+    # Larger values produce more complex, interconnected caves.
+    num_nodes: 20
+
+    # 3D bounding box in metres: X width, Y width, Z height
+    bounds_x: 80.0
+    bounds_y: 80.0
+    bounds_z: 25.0
+
+    # Number of extra loop edges added on top of the spanning tree.
+    # Higher values = more loop-closure opportunities for SLAM.
+    num_extra_loops: 3
+
+    # -----------------------------------------------------------------------
+    # Mesh generation
+    # -----------------------------------------------------------------------
+    # Voxel grid cell size in metres.
+    # Smaller = higher fidelity but much more memory and compute.
+    # 0.3 m is a good balance for an 80×80×25 m cave.
+    resolution: 0.3
+
+    # Simplex noise amplitude as a fraction of the minimum tunnel radius.
+    # 0.0 = perfectly smooth walls; 0.5 = very rough/jagged walls.
+    noise_amplitude: 0.25
+
+    # Spatial frequency of the Simplex noise displacement.
+    # Lower = large-scale waviness; higher = fine rocky texture.
+    noise_frequency: 0.08
+
+    # -----------------------------------------------------------------------
+    # Obstacle placement
+    # -----------------------------------------------------------------------
+    # Stalactite coverage density [0.0 – 1.0].
+    stalactite_density: 0.3
+
+    # Rubble/rock coverage density [0.0 – 1.0].
+    rubble_density: 0.2
+
+    # -----------------------------------------------------------------------
+    # Output
+    # -----------------------------------------------------------------------
+    # Output directory for all generated files.
+    output_dir: "/tmp/cave_generator_output"
+
+    # Whether to export Gazebo-compatible model.sdf and world file.
+    export_gazebo: true
+
+    # -----------------------------------------------------------------------
+    # Reproducibility
+    # -----------------------------------------------------------------------
+    # Random seed. Set to any integer for deterministic generation.
+    seed: 42

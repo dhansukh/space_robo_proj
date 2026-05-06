@@ -1,0 +1,174 @@
+[0.194s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'slam_pipeline']
+[0.194s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=16, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['slam_pipeline'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7c327e7a5840>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7c327e7a52d0>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7c327e7a52d0>>, mixin_verb=('build',))
+[0.640s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.641s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.641s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.641s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.641s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.641s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.641s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src'
+[0.641s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.642s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.663s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.664s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.664s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.664s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.664s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.664s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'ignore'
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'ignore_ament_install'
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extensions ['colcon_pkg']
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'colcon_pkg'
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extensions ['colcon_meta']
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'colcon_meta'
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extensions ['ros']
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'ros'
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extensions ['cmake', 'python']
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'cmake'
+[0.665s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'python'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extensions ['python_setup_py']
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces) by extension 'python_setup_py'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extensions ['ignore', 'ignore_ament_install']
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'ignore'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'ignore_ament_install'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extensions ['colcon_pkg']
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'colcon_pkg'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extensions ['colcon_meta']
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'colcon_meta'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extensions ['ros']
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'ros'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extensions ['cmake', 'python']
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'cmake'
+[0.666s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'python'
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extensions ['python_setup_py']
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_drone_interfaces/msg) by extension 'python_setup_py'
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extensions ['ignore', 'ignore_ament_install']
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extension 'ignore'
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extension 'ignore_ament_install'
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extensions ['colcon_pkg']
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extension 'colcon_pkg'
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extensions ['colcon_meta']
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extension 'colcon_meta'
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extensions ['ros']
+[0.667s] Level 1:colcon.colcon_core.package_identification:_identify(cave_generator) by extension 'ros'
+[0.673s] DEBUG:colcon.colcon_core.package_identification:Package 'cave_generator' with type 'ros.ament_python' and name 'cave_generator'
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extensions ['ignore', 'ignore_ament_install']
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extension 'ignore'
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extension 'ignore_ament_install'
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extensions ['colcon_pkg']
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extension 'colcon_pkg'
+[0.674s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extensions ['colcon_meta']
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extension 'colcon_meta'
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extensions ['ros']
+[0.675s] Level 1:colcon.colcon_core.package_identification:_identify(drone_bringup) by extension 'ros'
+[0.678s] DEBUG:colcon.colcon_core.package_identification:Package 'drone_bringup' with type 'ros.ament_python' and name 'drone_bringup'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extensions ['ignore', 'ignore_ament_install']
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extension 'ignore'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extension 'ignore_ament_install'
+[0.679s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extensions ['colcon_pkg']
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extension 'colcon_pkg'
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extensions ['colcon_meta']
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extension 'colcon_meta'
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extensions ['ros']
+[0.680s] Level 1:colcon.colcon_core.package_identification:_identify(exploration_planner) by extension 'ros'
+[0.683s] DEBUG:colcon.colcon_core.package_identification:Package 'exploration_planner' with type 'ros.ament_python' and name 'exploration_planner'
+[0.683s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.683s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.683s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.683s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extensions ['ignore', 'ignore_ament_install']
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extension 'ignore'
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extension 'ignore_ament_install'
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extensions ['colcon_pkg']
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extension 'colcon_pkg'
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extensions ['colcon_meta']
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extension 'colcon_meta'
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extensions ['ros']
+[0.684s] Level 1:colcon.colcon_core.package_identification:_identify(slam_pipeline) by extension 'ros'
+[0.686s] DEBUG:colcon.colcon_core.package_identification:Package 'slam_pipeline' with type 'ros.ament_python' and name 'slam_pipeline'
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.687s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.735s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'cave_generator' in 'cave_generator'
+[0.736s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'drone_bringup' in 'drone_bringup'
+[0.736s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'exploration_planner' in 'exploration_planner'
+[0.737s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.737s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.742s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 6 installed packages in /home/smalld/ros2_ws/install
+[0.745s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 301 installed packages in /opt/ros/humble
+[0.748s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'cmake_args' from command line to 'None'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'cmake_target' from command line to 'None'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'cmake_clean_cache' from command line to 'False'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'cmake_clean_first' from command line to 'False'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'cmake_force_configure' from command line to 'False'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'ament_cmake_args' from command line to 'None'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'catkin_cmake_args' from command line to 'None'
+[0.814s] Level 5:colcon.colcon_core.verb:set package 'slam_pipeline' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.814s] DEBUG:colcon.colcon_core.verb:Building package 'slam_pipeline' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline', 'merge_install': False, 'path': '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/slam_pipeline', 'symlink_install': False, 'test_result_base': None}
+[0.815s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.817s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.817s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/slam_pipeline' with build type 'ament_python'
+[0.818s] Level 1:colcon.colcon_core.shell:create_environment_hook('slam_pipeline', 'ament_prefix_path')
+[0.820s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.821s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/hook/ament_prefix_path.ps1'
+[0.832s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/hook/ament_prefix_path.dsv'
+[0.833s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/hook/ament_prefix_path.sh'
+[0.835s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.835s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.579s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/slam_pipeline'
+[1.580s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.580s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.574s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/slam_pipeline': PYTHONPATH=/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/slam_pipeline build --build-base /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build install --record /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/install.log --single-version-externally-managed install_data
+[3.400s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/slam_pipeline' returned '0': PYTHONPATH=/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/slam_pipeline build --build-base /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build install --record /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/install.log --single-version-externally-managed install_data
+[3.416s] Level 1:colcon.colcon_core.environment:checking '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline' for CMake module files
+[3.416s] Level 1:colcon.colcon_core.environment:checking '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline' for CMake config files
+[3.418s] Level 1:colcon.colcon_core.environment:checking '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib'
+[3.418s] Level 1:colcon.colcon_core.environment:checking '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/bin'
+[3.418s] Level 1:colcon.colcon_core.environment:checking '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/pkgconfig/slam_pipeline.pc'
+[3.419s] Level 1:colcon.colcon_core.environment:checking '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages'
+[3.419s] Level 1:colcon.colcon_core.shell:create_environment_hook('slam_pipeline', 'pythonpath')
+[3.420s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/hook/pythonpath.ps1'
+[3.421s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/hook/pythonpath.dsv'
+[3.421s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/hook/pythonpath.sh'
+[3.423s] Level 1:colcon.colcon_core.environment:checking '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/bin'
+[3.423s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(slam_pipeline)
+[3.424s] INFO:colcon.colcon_core.shell:Creating package script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/package.ps1'
+[3.427s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/package.dsv'
+[3.428s] INFO:colcon.colcon_core.shell:Creating package script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/package.sh'
+[3.430s] INFO:colcon.colcon_core.shell:Creating package script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/package.bash'
+[3.432s] INFO:colcon.colcon_core.shell:Creating package script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/package.zsh'
+[3.433s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/colcon-core/packages/slam_pipeline)
+[3.434s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[3.435s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[3.435s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[3.435s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[3.445s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[3.445s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[3.445s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[3.469s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[3.469s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/local_setup.ps1'
+[3.471s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/_local_setup_util_ps1.py'
+[3.473s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/setup.ps1'
+[3.478s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/local_setup.sh'
+[3.480s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/_local_setup_util_sh.py'
+[3.481s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/setup.sh'
+[3.483s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/local_setup.bash'
+[3.484s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/setup.bash'
+[3.487s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/local_setup.zsh'
+[3.488s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/setup.zsh'

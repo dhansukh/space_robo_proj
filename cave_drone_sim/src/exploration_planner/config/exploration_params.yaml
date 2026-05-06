@@ -1,0 +1,58 @@
+frontier_explorer:
+  ros__parameters:
+    voxel_resolution: 0.3        # metres — must match SLAM voxel size
+    frontier_min_size: 2         # minimum voxels in a valid frontier cluster
+    utility_weight_info: 1.0     # w1: information gain weight
+    utility_weight_distance: 0.5 # w2: distance penalty weight
+    utility_weight_heading: 0.3  # w3: heading alignment bonus weight
+    max_exploration_range: 50.0  # metres — discard frontiers beyond this radius
+    dbscan_eps: 1.0              # DBSCAN neighbourhood radius (metres)
+    dbscan_min_samples: 1        # DBSCAN minimum cluster size
+    raytrace_samples: 50         # number of rays for info-gain estimation
+    publish_rate: 2.0            # Hz — how often to evaluate and publish frontiers
+
+path_planner:
+  ros__parameters:
+    step_size: 0.5               # RRT* extension step (metres)
+    max_iterations: 5000         # maximum RRT* iterations per planning call
+    goal_bias: 0.1               # fraction of samples directed at goal
+    rewiring_radius: 2.0         # RRT* rewiring neighbourhood radius (metres)
+    safety_margin: 0.4           # collision check inflation around obstacles (metres)
+    goal_tolerance: 0.3          # distance within which goal is considered reached
+    timeout_sec: 10.0            # planning timeout before falling back to A*
+    astar_grid_resolution: 0.5   # A* voxel grid resolution for fallback planner
+    smooth_shortcut_passes: 3    # path shortcutting iterations
+    smooth_spline_k: 3           # B-spline degree
+
+local_planner:
+  ros__parameters:
+    max_speed: 1.5                     # m/s — maximum resultant velocity
+    max_angular_speed: 1.0             # rad/s
+    obstacle_influence_distance: 2.0   # d0 (metres) — APF repulsion radius
+    emergency_stop_distance: 0.3       # metres — triggers hard stop
+    k_attractive: 1.0                  # APF attractive gain
+    k_repulsive: 0.5                   # APF repulsive gain
+    path_deviation_threshold: 2.0      # metres — triggers replan request
+    lookahead_distance: 1.5            # metres — forward collision check
+    waypoint_reach_tolerance: 0.4      # metres — advance to next waypoint
+    control_rate: 20.0                 # Hz
+
+mission_manager:
+  ros__parameters:
+    exploration_altitude: 2.0          # metres above takeoff point
+    takeoff_speed: 0.5                 # m/s during ascent
+    landing_speed: 0.3                 # m/s during descent
+    battery_drain_rate: 0.001          # fraction per second (0.1%/s)
+    battery_return_threshold: 30.0     # % — trigger return-to-home
+    battery_land_threshold: 10.0       # % — force landing wherever we are
+    home_position: [0.0, 0.0, 0.0]       # SLAM map origin = drone start position
+    goal_reach_tolerance: 0.5          # metres — mission goal considered reached
+    slam_degeneracy_threshold: 0.1     # score below this triggers EMERGENCY
+    home_reach_tolerance: 0.5          # metres to consider home reached
+    state_publish_rate: 5.0            # Hz
+
+collision_checker:
+  ros__parameters:
+    safety_margin: 0.3                 # default point-check margin (metres)
+    kdtree_rebuild_rate: 2.0           # Hz — how often to rebuild KD-tree
+    max_obstacle_points: 100000        # cap for KD-tree size

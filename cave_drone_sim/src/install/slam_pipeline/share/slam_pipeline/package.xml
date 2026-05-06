@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>slam_pipeline</name>
+  <version>0.1.0</version>
+  <description>
+    ROS 2 SLAM pipeline package for autonomous drone cave exploration.
+    Integrates LiDAR SLAM with 3D occupancy mapping for navigation.
+    Supports FAST-LIO2, RTAB-Map, and a self-contained ICP-based fallback.
+  </description>
+  <maintainer email="drone@cave-exploration.local">Cave Drone Team</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- Core ROS 2 -->
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>builtin_interfaces</depend>
+
+  <!-- SLAM-related -->
+  <depend>octomap_msgs</depend>
+  <depend>octomap_ros</depend>
+
+  <!-- Python scientific stack (via rosdep or pip) -->
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>python3-scipy</exec_depend>
+
+  <!-- Optional: open3d, octomap-python installed via pip -->
+
+  <!-- External SLAM packages (optional) -->
+  <!-- fast_lio: https://github.com/hku-mars/FAST_LIO -->
+  <!-- rtabmap_ros: sudo apt install ros-$ROS_DISTRO-rtabmap-ros -->
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

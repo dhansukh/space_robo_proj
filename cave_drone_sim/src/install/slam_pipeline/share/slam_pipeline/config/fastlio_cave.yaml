@@ -1,0 +1,86 @@
+# fastlio_cave.yaml
+# ==================
+# FAST-LIO2 parameters tuned for cave / underground environment.
+#
+# Reference: https://github.com/hku-mars/FAST_LIO
+#
+# Tested with:
+#   - Ouster OS1-64 / OS1-128 (mechanical spinning)
+#   - Livox Mid-360 (solid-state)
+#   IMU: ICM-42688-P (400 Hz)
+#
+# Cave-specific tuning notes
+# --------------------------
+#  * max_iteration increased (feature-poor rock faces take more iterations)
+#  * scan_line reduced to match expected LiDAR ring count
+#  * filter_size_surf_min kept at 0.1m — cave walls have fine detail
+#  * cube_side_length reduced (drone in tight passages, smaller map region)
+#  * Dense point clouds expected from rock surfaces — DEN_THRESHOLD lowered
+
+fast_lio:
+  ros__parameters:
+
+    # ── LiDAR type ───────────────────────────────────────────────────────
+    # 1 = Velodyne, 2 = Ouster, 3 = Livox Avia, 6 = Livox Mid-360
+    lidar_type: 2
+
+    # Number of scan lines (rings); adjust to your hardware
+    scan_line: 64           # Ouster OS1-64 / Velodyne VLP-64
+    # scan_line: 32         # Velodyne VLP-32C
+    # scan_line: 128        # Ouster OS1-128
+
+    # Scan rate of the LiDAR (Hz)
+    scan_rate: 10
+
+    # Publish time offset — account for hardware timestamping
+    time_unit: 1            # 1 = milliseconds (Ouster), 0 = seconds
+
+    # Blind zone radius around sensor origin — ignore very close returns (m)
+    # In caves, walls can be very close; 0.5m is a safe minimum
+    blind: 0.5
+
+    # ── IMU ──────────────────────────────────────────────────────────────
+    imu_en: true
+
+    # IMU noise parameters (tune with Allan variance for your hardware)
+    # Units: accelerometer (m/s²/√Hz), gyroscope (rad/s/√Hz)
+    acc_cov:    0.1
+    gyr_cov:    0.1
+    b_acc_cov:  0.0001      # accelerometer bias random walk
+    b_gyr_cov:  0.0001      # gyroscope bias random walk
+
+    # ── IEKF (Iterated Extended Kalman Filter) ────────────────────────────
+    # Maximum iterations for the IEKF update step
+    # Increase for caves where convergence takes more iterations
+    max_iteration: 5
+
+    # Point density threshold for feature selection (lower = use more points)
+    point_filter_num: 3
+
+    # Minimum feature distance (m) — keep dense for rock detail
+    filter_size_surf_min: 0.1
+
+    # ── Local map management ──────────────────────────────────────────────
+    # Size of the local map cube (m).  In tight caves use a smaller cube
+    # to limit memory and speed up nearest-neighbour searches.
+    cube_side_length: 50.0
+
+    # Remove map points farther than this from current pose (m)
+    det_range: 100.0
+
+    # ── Output ────────────────────────────────────────────────────────────
+    pcd_save_en: false       # save map to PCD at shutdown (use map_saver instead)
+    runtime_pos_log_enable: false
+
+    # ── Extrinsics: LiDAR → IMU ───────────────────────────────────────────
+    # Set these from your robot's URDF / calibration result.
+    # Default: identity (LiDAR co-located with IMU)
+    extrinsic_est_en: false  # enable online extrinsic estimation (experimental)
+
+    # 3-element translation vector [x, y, z] in metres
+    extrinsic_T: [0.0, 0.0, 0.0]
+
+    # 9-element row-major rotation matrix (LiDAR frame → IMU frame)
+    extrinsic_R: [1.0, 0.0, 0.0,
+                  0.0, 1.0, 0.0,
+                  0.0, 0.0, 1.0]

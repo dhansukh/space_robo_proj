@@ -1,0 +1,49 @@
+# gz_bridge_px4.yaml
+# ==================
+# ros_gz_bridge configuration for PX4 SITL + cave exploration sensors.
+# Compatible with Gazebo Harmonic (gz-sim 8.x) + ROS 2 Humble.
+#
+# PX4 communicates with ROS 2 via Micro XRCE-DDS (px4_msgs), NOT
+# through this bridge. This bridge only handles Gazebo sensor topics
+# and the simulation clock.
+
+# -------------------------------------------------------------------
+# Clock  (Gazebo simulation time → ROS /clock)
+# -------------------------------------------------------------------
+- ros_topic_name: /clock
+  gz_topic_name: /clock
+  ros_type_name: rosgraph_msgs/msg/Clock
+  gz_type_name: gz.msgs.Clock
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# 3D LiDAR  (PointCloud2)
+# Published by the gpu_lidar sensor on lidar_link
+# x500_cave/model.sdf sensor topic: /lidar/points
+# -------------------------------------------------------------------
+- ros_topic_name: /lidar/points
+  gz_topic_name: /lidar/points/points
+  ros_type_name: sensor_msgs/msg/PointCloud2
+  gz_type_name: gz.msgs.PointCloudPacked
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# Depth Camera — depth image
+# x500_cave/model.sdf sensor topic: /depth_camera
+# Gazebo appends /depth_image for the depth channel
+# -------------------------------------------------------------------
+# depth_camera sensor only publishes on the base topic (gz.msgs.Image, R_FLOAT32 depth)
+- ros_topic_name: /depth_camera/depth
+  gz_topic_name: /depth_camera
+  ros_type_name: sensor_msgs/msg/Image
+  gz_type_name: gz.msgs.Image
+  direction: GZ_TO_ROS
+
+# -------------------------------------------------------------------
+# Depth Camera — point cloud
+# -------------------------------------------------------------------
+- ros_topic_name: /depth_camera/points
+  gz_topic_name: /depth_camera/points
+  ros_type_name: sensor_msgs/msg/PointCloud2
+  gz_type_name: gz.msgs.PointCloudPacked
+  direction: GZ_TO_ROS

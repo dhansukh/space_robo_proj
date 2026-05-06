@@ -1,0 +1,50 @@
+# drone_params.yaml
+# =================
+# ROS 2 parameter file for the DroneController node.
+#
+# Load with:
+#   ros2 run drone_bringup drone_controller --ros-args --params-file drone_params.yaml
+# or via a launch file parameter.
+#
+# All numeric values use SI units (metres, seconds, radians, Newtons).
+
+drone_controller:
+  ros__parameters:
+
+    # -------------------------------------------------------------------
+    # Motion limits
+    # -------------------------------------------------------------------
+    # Maximum allowable linear velocity in any axis (m/s).
+    max_linear_velocity: 2.0
+
+    # Maximum allowable yaw rate (rad/s).
+    max_angular_velocity: 1.0
+
+    # -------------------------------------------------------------------
+    # Vehicle physical properties
+    # -------------------------------------------------------------------
+    # Total airframe mass (kg).  Used to size force limits.
+    mass: 1.5
+
+    # Steady-state upward force required to maintain hover (N).
+    # Equals mass * g  =  1.5 kg * 9.81 m/s² ≈ 14.715 N.
+    hover_thrust: 14.715
+
+    # -------------------------------------------------------------------
+    # PID gains — linear velocity axes (x, y, z share the same gains)
+    # -------------------------------------------------------------------
+    pid_linear:
+      # Proportional gain: immediate response to velocity error
+      kp: 5.0
+      # Integral gain: eliminate steady-state velocity offset
+      ki: 0.1
+      # Derivative gain: damp velocity oscillations
+      kd: 2.0
+
+    # -------------------------------------------------------------------
+    # PID gains — angular velocity (yaw rate)
+    # -------------------------------------------------------------------
+    pid_angular:
+      kp: 3.0
+      ki: 0.05
+      kd: 1.0

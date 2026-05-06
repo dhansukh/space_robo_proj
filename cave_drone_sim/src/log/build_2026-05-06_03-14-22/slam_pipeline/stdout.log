@@ -1,0 +1,25 @@
+running egg_info
+writing ../build/slam_pipeline/slam_pipeline.egg-info/PKG-INFO
+writing dependency_links to ../build/slam_pipeline/slam_pipeline.egg-info/dependency_links.txt
+writing entry points to ../build/slam_pipeline/slam_pipeline.egg-info/entry_points.txt
+writing requirements to ../build/slam_pipeline/slam_pipeline.egg-info/requires.txt
+writing top-level names to ../build/slam_pipeline/slam_pipeline.egg-info/top_level.txt
+reading manifest file '../build/slam_pipeline/slam_pipeline.egg-info/SOURCES.txt'
+writing manifest file '../build/slam_pipeline/slam_pipeline.egg-info/SOURCES.txt'
+running build
+running build_py
+copying slam_pipeline/simple_lidar_odom.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+running install
+running install_lib
+copying /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline/simple_lidar_odom.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+byte-compiling /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline/simple_lidar_odom.py to simple_lidar_odom.cpython-310.pyc
+running install_data
+running install_egg_info
+removing '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline-0.1.0-py3.10.egg-info' (and everything under it)
+Copying ../build/slam_pipeline/slam_pipeline.egg-info to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline-0.1.0-py3.10.egg-info
+running install_scripts
+Installing degeneracy_detector script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+Installing map_saver script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+Installing octomap_builder script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+Installing simple_lidar_odom script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+writing list of installed files to '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/install.log'

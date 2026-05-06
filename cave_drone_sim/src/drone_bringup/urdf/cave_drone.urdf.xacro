@@ -1,0 +1,392 @@
+<?xml version="1.0"?>
+<!--
+  cave_drone.urdf.xacro
+  Quadrotor drone URDF for autonomous cave exploration simulation.
+  Compatible with Gazebo Harmonic (gz-sim 8.x).
+
+  Sensors:
+    - Velodyne VLP-16-style 3D LiDAR (gpu_lidar)
+    - Forward-facing depth camera (depth_camera)
+    - IMU at center of mass (imu)
+
+  Author: drone_bringup package
+-->
+<robot name="cave_drone" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ===================================================================
+       PROPERTIES
+       =================================================================== -->
+  <xacro:property name="body_mass"   value="1.5"/>
+  <xacro:property name="body_x"      value="0.5"/>
+  <xacro:property name="body_y"      value="0.5"/>
+  <xacro:property name="body_z"      value="0.15"/>
+
+  <xacro:property name="rotor_radius"    value="0.12"/>
+  <xacro:property name="rotor_thickness" value="0.01"/>
+  <xacro:property name="rotor_mass"      value="0.05"/>
+  <!-- Rotor arm length from body centre to rotor centre -->
+  <xacro:property name="arm_length"      value="0.22"/>
+
+  <!-- Camera pitch down (10° = 0.1745 rad) -->
+  <xacro:property name="cam_pitch" value="-0.1745329"/>
+
+  <!-- ===================================================================
+       INERTIA MACROS
+       =================================================================== -->
+
+  <!-- Solid box inertia -->
+  <xacro:macro name="box_inertia" params="m x y z">
+    <inertia
+      ixx="${m*(y*y+z*z)/12.0}"
+      ixy="0" ixz="0"
+      iyy="${m*(x*x+z*z)/12.0}"
+      iyz="0"
+      izz="${m*(x*x+y*y)/12.0}"/>
+  </xacro:macro>
+
+  <!-- Solid cylinder inertia (axis along Z) -->
+  <xacro:macro name="cylinder_inertia" params="m r h">
+    <inertia
+      ixx="${m*(3*r*r+h*h)/12.0}"
+      ixy="0" ixz="0"
+      iyy="${m*(3*r*r+h*h)/12.0}"
+      iyz="0"
+      izz="${m*r*r/2.0}"/>
+  </xacro:macro>
+
+  <!-- Small sphere inertia (for sensor links) -->
+  <xacro:macro name="sphere_inertia" params="m r">
+    <inertia
+      ixx="${2.0*m*r*r/5.0}"
+      ixy="0" ixz="0"
+      iyy="${2.0*m*r*r/5.0}"
+      iyz="0"
+      izz="${2.0*m*r*r/5.0}"/>
+  </xacro:macro>
+
+  <!-- ===================================================================
+       ROTOR MACRO
+       Params: id (0-3), x, y — position in XY plane relative to base_link
+               color — rotor colour material name
+       =================================================================== -->
+  <xacro:macro name="rotor" params="id x y color">
+    <link name="rotor_${id}">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${rotor_radius}" length="${rotor_thickness}"/>
+        </geometry>
+        <material name="${color}"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="${rotor_radius}" length="${rotor_thickness}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${rotor_mass}"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <xacro:cylinder_inertia m="${rotor_mass}" r="${rotor_radius}" h="${rotor_thickness}"/>
+      </inertial>
+    </link>
+
+    <joint name="rotor_${id}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child  link="rotor_${id}"/>
+      <origin xyz="${x} ${y} ${body_z/2.0 + 0.01}" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <dynamics damping="0.001" friction="0.001"/>
+    </joint>
+
+    <!-- Gazebo visual colour -->
+    <gazebo reference="rotor_${id}">
+      <material>Gazebo/${color}</material>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- ===================================================================
+       BASE LINK  (quadrotor body)
+       =================================================================== -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${body_x} ${body_y} ${body_z}"/>
+      </geometry>
+      <material name="DarkGray">
+        <color rgba="0.25 0.25 0.25 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${body_x} ${body_y} ${body_z}"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="${body_mass}"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <xacro:box_inertia m="${body_mass}" x="${body_x}" y="${body_y}" z="${body_z}"/>
+    </inertial>
+  </link>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/DarkGray</material>
+  </gazebo>
+
+  <!-- ===================================================================
+       ROTORS (at four corners, alternating red / black)
+       =================================================================== -->
+  <xacro:rotor id="0" x=" ${arm_length}" y=" ${arm_length}" color="Red"/>
+  <xacro:rotor id="1" x="-${arm_length}" y="-${arm_length}" color="Red"/>
+  <xacro:rotor id="2" x=" ${arm_length}" y="-${arm_length}" color="Black"/>
+  <xacro:rotor id="3" x="-${arm_length}" y=" ${arm_length}" color="Black"/>
+
+  <!-- ===================================================================
+       LiDAR LINK  — Velodyne VLP-16 style 3D LiDAR
+       Mounted on top of body, centred.
+       =================================================================== -->
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0516" length="0.0717"/>
+      </geometry>
+      <material name="LidarGray">
+        <color rgba="0.4 0.4 0.4 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0516" length="0.0717"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.83"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <xacro:cylinder_inertia m="0.83" r="0.0516" h="0.0717"/>
+    </inertial>
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="lidar_link"/>
+    <origin xyz="0 0 ${body_z/2.0 + 0.036}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Gazebo Harmonic gpu_lidar sensor -->
+  <gazebo reference="lidar_link">
+    <sensor name="lidar" type="gpu_lidar">
+      <update_rate>10</update_rate>
+      <topic>/drone/lidar/points</topic>
+      <gz_frame_id>lidar_link</gz_frame_id>
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>1800</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159265</min_angle>
+            <max_angle> 3.14159265</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>16</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.26179939</min_angle>  <!-- -15 deg -->
+            <max_angle> 0.26179939</max_angle>  <!--  15 deg -->
+          </vertical>
+        </scan>
+        <range>
+          <min>0.1</min>
+          <max>100.0</max>
+          <resolution>0.001</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </lidar>
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+    </sensor>
+  </gazebo>
+
+  <!-- ===================================================================
+       DEPTH CAMERA LINK — front-facing, pitched 10° down
+       =================================================================== -->
+  <link name="depth_camera_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.09 0.025"/>
+      </geometry>
+      <material name="CameraBlack">
+        <color rgba="0.1 0.1 0.1 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.04 0.09 0.025"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.07"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <xacro:box_inertia m="0.07" x="0.04" y="0.09" z="0.025"/>
+    </inertial>
+  </link>
+
+  <joint name="depth_camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="depth_camera_link"/>
+    <!-- 0.15 m forward, 0.02 m below body centre, pitched 10° downward -->
+    <origin xyz="0.15 0 -0.02" rpy="0 ${cam_pitch} 0"/>
+  </joint>
+
+  <!-- Gazebo Harmonic depth_camera sensor -->
+  <gazebo reference="depth_camera_link">
+    <sensor name="depth_camera" type="depth_camera">
+      <update_rate>15</update_rate>
+      <topic>/drone/depth_camera</topic>
+      <gz_frame_id>depth_camera_link</gz_frame_id>
+      <camera>
+        <horizontal_fov>1.5184</horizontal_fov>  <!-- 87 deg -->
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R_FLOAT32</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>10.0</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </camera>
+      <always_on>true</always_on>
+      <visualize>false</visualize>
+    </sensor>
+  </gazebo>
+
+  <!-- ===================================================================
+       IMU LINK — at centre of mass
+       =================================================================== -->
+  <link name="imu_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.01"/>
+      </geometry>
+      <material name="ImuGreen">
+        <color rgba="0.0 0.8 0.0 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.02 0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.015"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <xacro:box_inertia m="0.015" x="0.02" y="0.02" z="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="imu_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Gazebo Harmonic imu sensor -->
+  <gazebo reference="imu_link">
+    <sensor name="imu" type="imu">
+      <update_rate>200</update_rate>
+      <topic>/drone/imu</topic>
+      <gz_frame_id>imu_link</gz_frame_id>
+      <imu>
+        <angular_velocity>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.001</bias_stddev>
+            </noise>
+          </z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.1</stddev>
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.01</bias_stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.1</stddev>
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.01</bias_stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.1</stddev>
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.01</bias_stddev>
+            </noise>
+          </z>
+        </linear_acceleration>
+      </imu>
+      <always_on>true</always_on>
+    </sensor>
+  </gazebo>
+
+  <!-- ===================================================================
+       GAZEBO PHYSICS PLUGIN (MulticopterVelocityControl)
+       Provides rotor dynamics and body wrench interface.
+       =================================================================== -->
+  <gazebo>
+    <plugin
+      filename="gz-sim-apply-joint-force-system"
+      name="gz::sim::systems::ApplyJointForce">
+    </plugin>
+  </gazebo>
+
+  <!-- Allows external wrench application for the velocity controller -->
+  <gazebo>
+    <plugin
+      filename="gz-sim-apply-link-wrench-system"
+      name="gz::sim::systems::ApplyLinkWrench">
+    </plugin>
+  </gazebo>
+
+</robot>

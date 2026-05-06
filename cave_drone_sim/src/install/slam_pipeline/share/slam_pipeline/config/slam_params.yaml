@@ -1,0 +1,101 @@
+# slam_params.yaml
+# =================
+# Parameter file for the slam_pipeline package nodes.
+# Load with: ros2 launch slam_pipeline slam_simple.launch.py params_file:=<this file>
+
+# ---------------------------------------------------------------------------
+# simple_lidar_odom — ICP-based LiDAR odometry
+# ---------------------------------------------------------------------------
+simple_lidar_odom:
+  ros__parameters:
+    # Voxel grid leaf size for downsampling scans (metres)
+    voxel_size: 0.1
+
+    # Maximum correspondence distance for ICP matching (metres)
+    # Increase if the drone moves fast between scans
+    icp_max_distance: 1.0
+
+    # Maximum ICP iterations per scan
+    icp_max_iter: 30
+
+    # Keyframe insertion thresholds
+    # New keyframe when translation > keyframe_distance metres ...
+    keyframe_distance: 0.2
+    # ... or rotation > keyframe_rotation radians (~5° — dense coverage during 360° scans)
+    keyframe_rotation: 0.087
+
+    # Number of recent keyframes kept in the sliding-window local map
+    # (large value since PX4 pose replaces ICP — keep full mission history)
+    local_map_size: 200
+
+    # TF frame IDs
+    map_frame:  "map"
+    odom_frame: "odom"
+    base_frame: "base_link"
+
+
+# ---------------------------------------------------------------------------
+# octomap_builder — 3-D occupancy mapping
+# ---------------------------------------------------------------------------
+octomap_builder:
+  ros__parameters:
+    # Voxel resolution of the occupancy map (metres) — 0.1m for sharp wall detail
+    resolution: 0.1
+
+    # Maximum raycasting range — ignore points beyond this (metres).
+    # Largest chamber radius is ~8 m, so 15 m covers full tunnel cross-sections
+    # while rejecting far-field noise that escapes through the cave entrance.
+    max_range: 15.0
+
+    # Sensor model: probability that an occupied voxel is truly occupied
+    # when a point lands there (hits)
+    sensor_model_hit: 0.7
+
+    # Probability that a free-space voxel is truly free
+    # (along the ray before the endpoint)
+    sensor_model_miss: 0.4
+
+    # Map frame
+    map_frame: "map"
+
+    # Rate at which the map is published (Hz)
+    publish_rate_hz: 1.0
+
+    # Z range for the 2-D occupancy grid projection (metres)
+    z_slice_min: -0.5
+    z_slice_max: 2.5
+
+
+# ---------------------------------------------------------------------------
+# degeneracy_detector — geometric health monitor
+# ---------------------------------------------------------------------------
+degeneracy_detector:
+  ros__parameters:
+    # Score threshold below which a degeneracy warning is issued.
+    # Score is λ_min / λ_max of the point-cloud covariance matrix.
+    # Tunnel/corridor: ~0.001–0.01; open space: ~0.1–0.3
+    eigenvalue_threshold: 0.01
+
+    # Number of recent scans to smooth the score over
+    window_size: 5
+
+    # Voxel size for downsampling before covariance computation (metres)
+    voxel_size: 0.3
+
+    # Minimum points required to compute a score
+    min_points: 20
+
+
+# ---------------------------------------------------------------------------
+# map_saver — map persistence
+# ---------------------------------------------------------------------------
+map_saver:
+  ros__parameters:
+    # Output directory for saved maps
+    output_dir: "/tmp/slam_maps"
+
+    # Point cloud file format: "pcd", "pcd_binary", or "ply"
+    cloud_format: "pcd_binary"
+
+    # Auto-save interval in seconds (0 = disabled)
+    auto_save_interval: 0.0

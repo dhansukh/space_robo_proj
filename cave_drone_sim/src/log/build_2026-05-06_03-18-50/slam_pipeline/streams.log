@@ -1,0 +1,27 @@
+[1.245s] Invoking command in '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/slam_pipeline': PYTHONPATH=/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/slam_pipeline build --build-base /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build install --record /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/install.log --single-version-externally-managed install_data
+[1.651s] running egg_info
+[1.652s] writing ../build/slam_pipeline/slam_pipeline.egg-info/PKG-INFO
+[1.653s] writing dependency_links to ../build/slam_pipeline/slam_pipeline.egg-info/dependency_links.txt
+[1.653s] writing entry points to ../build/slam_pipeline/slam_pipeline.egg-info/entry_points.txt
+[1.653s] writing requirements to ../build/slam_pipeline/slam_pipeline.egg-info/requires.txt
+[1.653s] writing top-level names to ../build/slam_pipeline/slam_pipeline.egg-info/top_level.txt
+[1.657s] reading manifest file '../build/slam_pipeline/slam_pipeline.egg-info/SOURCES.txt'
+[1.659s] writing manifest file '../build/slam_pipeline/slam_pipeline.egg-info/SOURCES.txt'
+[1.659s] running build
+[1.659s] running build_py
+[1.660s] copying slam_pipeline/simple_lidar_odom.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+[1.660s] running install
+[1.660s] running install_lib
+[1.662s] copying /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline/simple_lidar_odom.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+[1.664s] byte-compiling /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline/simple_lidar_odom.py to simple_lidar_odom.cpython-310.pyc
+[1.676s] running install_data
+[1.678s] running install_egg_info
+[1.680s] removing '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline-0.1.0-py3.10.egg-info' (and everything under it)
+[1.681s] Copying ../build/slam_pipeline/slam_pipeline.egg-info to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline-0.1.0-py3.10.egg-info
+[1.682s] running install_scripts
+[1.712s] Installing degeneracy_detector script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+[1.712s] Installing map_saver script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+[1.712s] Installing octomap_builder script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+[1.712s] Installing simple_lidar_odom script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+[1.712s] writing list of installed files to '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/install.log'
+[1.797s] Invoked command in '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/slam_pipeline' returned '0': PYTHONPATH=/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/slam_pipeline build --build-base /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build install --record /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/install.log --single-version-externally-managed install_data

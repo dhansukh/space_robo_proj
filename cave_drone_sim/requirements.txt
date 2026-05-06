@@ -1,0 +1,23 @@
+# Cave Drone Simulation – Python dependencies
+# Install with:  pip3 install -r requirements.txt
+#
+# Core scientific stack
+numpy>=1.24
+scipy>=1.10
+networkx>=3.0
+
+# Image / mesh processing
+scikit-image>=0.20
+trimesh>=3.20
+
+# Procedural noise for cave geometry
+opensimplex>=0.4
+
+# Visualisation (optional but recommended for debug outputs)
+matplotlib>=3.7
+
+# 3-D point cloud processing
+open3d>=0.17
+
+# Machine-learning utilities used by exploration planner
+scikit-learn>=1.2

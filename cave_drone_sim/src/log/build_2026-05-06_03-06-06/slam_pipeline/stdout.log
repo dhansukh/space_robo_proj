@@ -1,0 +1,55 @@
+running egg_info
+creating ../build/slam_pipeline/slam_pipeline.egg-info
+writing ../build/slam_pipeline/slam_pipeline.egg-info/PKG-INFO
+writing dependency_links to ../build/slam_pipeline/slam_pipeline.egg-info/dependency_links.txt
+writing entry points to ../build/slam_pipeline/slam_pipeline.egg-info/entry_points.txt
+writing requirements to ../build/slam_pipeline/slam_pipeline.egg-info/requires.txt
+writing top-level names to ../build/slam_pipeline/slam_pipeline.egg-info/top_level.txt
+writing manifest file '../build/slam_pipeline/slam_pipeline.egg-info/SOURCES.txt'
+reading manifest file '../build/slam_pipeline/slam_pipeline.egg-info/SOURCES.txt'
+writing manifest file '../build/slam_pipeline/slam_pipeline.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+copying slam_pipeline/simple_lidar_odom.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+copying slam_pipeline/degeneracy_detector.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+copying slam_pipeline/octomap_builder.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+copying slam_pipeline/__init__.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+copying slam_pipeline/map_saver.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline
+running install
+running install_lib
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+copying /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline/simple_lidar_odom.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+copying /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline/degeneracy_detector.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+copying /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline/octomap_builder.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+copying /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline/__init__.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+copying /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/build/lib/slam_pipeline/map_saver.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline
+byte-compiling /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline/simple_lidar_odom.py to simple_lidar_odom.cpython-310.pyc
+byte-compiling /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline/degeneracy_detector.py to degeneracy_detector.cpython-310.pyc
+byte-compiling /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline/octomap_builder.py to octomap_builder.cpython-310.pyc
+byte-compiling /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline/__init__.py to __init__.cpython-310.pyc
+byte-compiling /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline/map_saver.py to map_saver.cpython-310.pyc
+running install_data
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/ament_index
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/ament_index/resource_index
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/ament_index/resource_index/packages
+copying resource/slam_pipeline -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/ament_index/resource_index/packages
+copying package.xml -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/launch
+copying launch/slam_simple.launch.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/launch
+copying launch/slam_fastlio.launch.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/launch
+copying launch/slam_rtabmap.launch.py -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/launch
+creating /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/config
+copying config/fastlio_cave.yaml -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/config
+copying config/rtabmap_cave.yaml -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/config
+copying config/slam_params.yaml -> /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/share/slam_pipeline/config
+running install_egg_info
+Copying ../build/slam_pipeline/slam_pipeline.egg-info to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/python3.10/site-packages/slam_pipeline-0.1.0-py3.10.egg-info
+running install_scripts
+Installing degeneracy_detector script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+Installing map_saver script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+Installing octomap_builder script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+Installing simple_lidar_odom script to /home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/install/slam_pipeline/lib/slam_pipeline
+writing list of installed files to '/home/smalld/Downloads/space_robo_proj/cave_drone_sim/src/build/slam_pipeline/install.log'

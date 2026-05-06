@@ -1,0 +1,289 @@
+# Terminal 1 — Launch Gazebo (now defaults to cave_flat automatically):
+./scripts/start_px4_cave.sh
+
+# Terminal 2 — SLAM pipeline:
+ros2 launch slam_pipeline slam_simple.launch.py
+
+# Terminal 3 — Coverage mission:
+python3 scripts/slam_coverage.py --cave ./output/cave_flat --max-segs 6 --auto-save 2
+ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+
+If you ever want to use a specific cave explicitly:
+./scripts/start_px4_cave.sh ./output/cave_001/cave_world.sdf  # force cave_001
+./scripts/start_px4_cave.sh ./output/cave_flat/cave_world.sdf # force cave_flat
+
+
+
+# If you need to regenerate the cave (to get centerlines.json):
+python3 scripts/generate_cave.py --output ./output/cave_flat --seed 42
+
+# Run the mapper:
+python3 scripts/slam_coverage.py --cave ./output/cave_flat
+ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+python3 scripts/slam_coverage.py --cave ./output/cave_flat --max-segs 3
+ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+
+to stop Manually trigger save at any time (without stopping)
+ros2 service call /slam/save_map std_srvs/srv/Trigger {}
+
+
+The NED positions look correct — node 0 maps to (0, 0)  
+  exactly, and all other chambers are relative offsets. The  
+  cave extends up to ~76m North and ~49m West.               
+        claude --resume a6f6ad2d-8120-4875-9c51-73922c787fa3       
+                                                   
+  One thing I notice: the graph is a single connected        
+  component (all 25 nodes reachable from node 0), and nodes
+  11, 12, 15, 19 are effective dead-ends (one neighbor each) 
+  even though only node 23 has is_dead_end: true. The      
+  backtracking logic handles all of these correctly.
+
+  The code is ready to test. Here's the run sequence:        
+   
+  # T1                                                       
+  ./scripts/start_px4_cave.sh                                
+                                                             
+  # T2                                                       
+  ros2 launch drone_bringup px4_cave.launch.py use_vel_bridge:=false                                      
+   
+  # T3                                                       
+  ros2 launch slam_pipeline slam_simple.launch.py          
+                                                             
+  # T4  (optional frontier planner)                          
+  ros2 run exploration_planner frontier_explorer             
+                                                             
+  # T5                                                     
+  python3 scripts/cave_explorer.py
+                                                             
+  # T6 — when PX4 is ready                                   
+  ros2 topic pub --once /mission/start std_msgs/msg/Empty {} 
+                                                             
+  Things to watch for in the logs:                           
+  - Cave graph loaded: 25 chambers, BFS from node 0 —        
+  confirms graph loaded correctly                            
+  - NED home locked: N=0.06 E=0.16 D=-0.05 — small values  
+  expected                                                   
+  - [node 0] Scanning chamber (r=7.4 m)... — scan started at 
+  entry chamber                                             
+  - → Transit to node 9  yaw=...  dist=13.7 m — first transit
+   begins                                                    
+  - ✓ Arrived at chamber 9  (2/25 visited) — arrival         
+  detection working                                        
+  - All 25 chambers explored — returning home! — mission     
+  complete                                                 
+  - Map saved: Saved: grid_...pgm + ...yaml, cloud_....pcd — 
+  SLAM map written to disk                                  
+                                                             
+  If the drone times out on a transit (90s), it logs a     
+  warning and marks the chamber visited, then continues — so 
+  the mission won't get permanently stuck.                 
+                                                             
+✻ Worked for 20m 52s                                       
+
+─────────────────────────────────────────────────────────────
+❯  
+─────────────────────────────────────────────────────────────
+  ⏵⏵ accept edits on (shift+tab to cycle)                  
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ cave_explorer.py — run order                                
+                                                              
+  # T1 — Gazebo + PX4                                         
+  ./scripts/start_px4_cave.sh                                 
+                                                              
+  # T2 — ROS 2 bridge (vel bridge OFF — cave_explorer owns    
+  offboard control)                                           
+  ros2 launch drone_bringup px4_cave.launch.py use_vel_bridge:=false                                       
+   
+  # T3 — SLAM                                                 
+  ros2 launch slam_pipeline slam_simple.launch.py           
+                                                              
+  # T4 — Frontier planner                                   
+  ros2 run exploration_planner frontier_explorer              
+                                                            
+  # T5 — Cave explorer
+  python3 scripts/cave_explorer.py
+                                                              
+  # T6 — Trigger takeoff
+  ros2 topic pub --once /mission/start std_msgs/msg/Empty {}  
+                                                              
+  # Optional — trigger return home                            
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}   
+                                                              
+  What it does, state by state:                               
+   
+  State: INIT                                                 
+  Behaviour: Publishes 15 heartbeats (~1.5 s), then arms +  
+    switches OFFBOARD                                       
+  ────────────────────────────────────────                  
+
+  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  What it does, state by state:
+
+  ┌───────────┬───────────────────────────────────────────────────────────────────────────┐
+  │   State   │                                 Behaviour              │
+  ├───────────┼───────────────────────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches OFFBOARD           │
+  ├───────────┼───────────────────────────────────────────────────────────────────────────┤
+  │ TAKEOFF   │ Spline-climbs 1.5 m above the spawn point              │
+  ├───────────┼───────────────────────────────────────────────────────────────────────────┤
+  │           │ Hovers; scans the 36-sector polar histogram every tick. Waits until any   │
+  │ FIND_PASS │ sector shows ≥ 5 m clearance (that's the passage — chamber walls are only │
+  │           │  3.7 m away)              │
+  ├───────────┼───────────────────────────────────────────────────────────────────────────┤
+  │ LIDAR_NAV │ Flies into the passage; refreshes waypoint every ~4 s usingLiDAR +       │
+  ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+
+  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  What it does, state by state:
+
+  ┌───────────┬────────────────────────────────────────────────────────────────────────┐
+  │   State   │                               Behaviour           │
+  ├───────────┼────────────────────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches OFFBOARD        │
+  ├───────────┼────────────────────────────────────────────────────────────────────────┤
+  │ TAKEOFF   │ Spline-climbs 1.5 m above the spawn point           │
+  ├───────────┼────────────────────────────────────────────────────────────────────────┤
+  │           │ Hovers; scans the 36-sector polar histogram every tick. Waits until    │
+  │ FIND_PASS │ any sector shows ≥ 5 m clearance (that's the passage — chamber walls   │
+  │           │ are only 3.7 m away)           │
+  ├───────────┼────────────────────────────────────────────────────────────────────────┤
+  │ LIDAR_NAV │ Flies into the passage; refreshes waypoint every ~4 s usingLiDAR +    │
+  # T6 — Trigger takeoff
+  ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+
+  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  What it does, state by state:
+
+  ┌───────────┬─────────────────────────────────────────────────────────────────────┐
+  │   State   │                              Behaviour    │
+  ├───────────┼─────────────────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches OFFBOARD │
+  ├───────────┼─────────────────────────────────────────────────────────────────────┤
+  │ TAKEOFF   │ Spline-climbs 1.5 m above the spawn point    │
+  ├───────────┼──────────────────────────────────────────────────────────────────  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  What it does, state by state:
+
+  ┌───────────┬─────────────────────────────────────────────────────────────────┐
+  │   State   │                            Behaviour    │
+  ├───────────┼─────────────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches OFFBOARD │
+  ├───────────┼─────────────────────────────────────────────────────────────────┤
+  │ TAKEOFF   │ Spline-climbs 1.5 m above the spawn point    │
+  ├───────────┼─────────────────────────────────────────────────────────────────┤
+  │           │ Hovers; scans the 36-sector polar histogram every tick. Waits   │
+  │ FIND_PASS │ until any sector shows ≥ 5 m clearance (that's the passage —    │
+  │           │ chamber walls are only 3.7 m away)    │
+  ├───────────┼─────────────────────────────────────────────────────────────────┤
+  │           │ Flies into the passage; refreshes waypoint every ~4 s using    │
+  │ LIDAR_NAV │ LiDAR + frontier goal direction bias. Handles blocked passages  │
+  │           │ by rotating 30°
+  # T6 — Trigger takeoff
+  ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+
+  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  What it does, state by state:
+
+  ┌───────────┬───────────────────────────────────────────────────────────────┐
+  │   State   │                           Behaviour│
+  ├───────────┼───────────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches│
+  │           │ OFFBOARD│
+  ├───────────┼───────────────────────────────────────────────────────────────┤
+  │ TAKEOFF   │ Spline-climbs 1.5 m above the spawn point│
+  ├───────────┼───────────────────────────────────────────────────────────────┤
+  │           │ Hovers; scans the 36-sector polar histogram every tick. Wait│
+  │ FIND_PASS │  until any sector shows ≥ 5 m clearance (that's the passage│
+  │           │  chamber walls are only 3.7 m away)│
+  ├───────────┼───────────────────────────────────────────────────────────────┤
+  ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+
+  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  What it does, state by state:
+
+  ┌───────────┬───────────────────────────────────────────────────────────┐
+  │   State   │                         Behaviour                        │
+  ├───────────┼───────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches   │
+  │           │ OFFBOARD                                                 │
+  ├───────────┼───────────────────────────────────────────────────────────python3 scripts/cave_explorer.py
+
+  # T6 — Trigger takeoff
+  ros2 topic pub --once /mission/start std_msgs/msg/Empty {}
+
+  # Optional — trigger return home
+  ros2 topic pub --once /mission/land std_msgs/msg/Empty {}
+
+  What it does, state by state:
+
+  ┌───────────┬────────────────────────────────────────────────────────┐
+  │   State   │                       Behaviour                        │
+  ├───────────┼────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches │
+  │           │  OFFBOARD                                              │
+  ├───────────┼────────────────────────────────────────────────────────┤
+  │ TAKEOFF   │ Spline-climbs 1.5 m above the spawn point              │
+  ├───────────┼────────────────────────────────────────────────────────┤
+  │           │ Hovers; scans the 36-sector polar histogram every      │
+  │ FIND_PASS │ tick. Waits until any sector shows ≥ 5 m clearance     │
+  │           │ (that's the passage — chamber walls are only 3.7 m     │
+  │           │ away)                                                  │
+  ├───────────┼────────────────────────────────────────────────────────┤
+
+
+  What it does, state by state:
+
+  ┌───────────┬──────────────────────────────────────────────────────────┐
+  │   State   │                        Behaviour                         │
+  ├───────────┼──────────────────────────────────────────────────────────┤
+  │ INIT      │ Publishes 15 heartbeats (~1.5 s), then arms + switches   │
+  │           │ OFFBOARD                                                 │
+  ├───────────┼──────────────────────────────────────────────────────────┤
+  │ TAKEOFF   │ Spline-climbs 1.5 m above the spawn point                │
+  ├───────────┼──────────────────────────────────────────────────────────┤
+  │           │ Hovers; scans the 36-sector polar histogram every tick.  │
+  │ FIND_PASS │ Waits until any sector shows ≥ 5 m clearance (that's the │
+  │           │  passage — chamber walls are only 3.7 m away)            │
+  ├───────────┼──────────────────────────────────────────────────────────┤
+  │           │ Flies into the passage; refreshes waypoint every ~4 s    │
+  │ LIDAR_NAV │ using LiDAR + frontier goal direction bias. Handles      │
+  │           │ blocked passages by rotating 30°                         │
+  ├───────────┼──────────────────────────────────────────────────────────┤
+  │ RETURN    │ On /mission/land, straight-line flight back to home XY   │
+  │           │ at cruise alt                                            │
+  ├───────────┼──────────────────────────────────────────────────────────┤
+  │ LANDING   │ NAV_LAND command, waits 5 s, then disarms                │
+  └───────────┴──────────────────────────────────────────────────────────┘
+
+  The bug fix in FIND_PASS ensures the passage is detected by max clearance
+  (not scored direction), which means a 5+ m opening behind the drone is
+  still found even when a closer wall is directly ahead.
+

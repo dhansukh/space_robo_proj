@@ -1,0 +1,14 @@
+# Build and install directories
+cave_drone_sim/build/
+cave_drone_sim/install/
+cave_drone_sim/log/
+
+# IDEs and environments
+.vscode/
+.claude/
+.gemini/
+__pycache__/
+*.pyc
+
+# Exclude cave_flat output from ignore so it is tracked
+!cave_drone_sim/output/cave_flat/

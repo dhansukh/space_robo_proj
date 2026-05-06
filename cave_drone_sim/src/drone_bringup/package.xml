@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<!--
+  package.xml
+  ===========
+  ROS 2 package manifest for drone_bringup.
+  Build type : ament_python
+  Target ROS  : Humble / Iron / Jazzy
+  Gazebo      : Harmonic (gz-sim 8.x)
+-->
+<package format="3">
+  <name>drone_bringup</name>
+  <version>0.1.0</version>
+  <description>
+    Bringup package for simulating an autonomous cave-exploration quadrotor
+    drone in Gazebo Harmonic.  Includes URDF/xacro, Gazebo model, sensor
+    configuration, ROS 2 control nodes, launch files, and RViz2 config.
+  </description>
+
+  <maintainer email="thesis@cave-exploration.sim">drone_bringup</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- ===================================================================
+       Build tool
+       =================================================================== -->
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- ===================================================================
+       Runtime dependencies — Python nodes
+       =================================================================== -->
+  <depend>rclpy</depend>
+
+  <!-- ROS message types -->
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>rosgraph_msgs</depend>
+
+  <!-- TF2 -->
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+
+  <!-- ===================================================================
+       Runtime dependencies — launch infrastructure
+       =================================================================== -->
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <!-- ===================================================================
+       Runtime dependencies — Gazebo / simulation
+       =================================================================== -->
+  <!-- Gazebo Harmonic ROS integration -->
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_interfaces</exec_depend>
+
+  <!-- URDF / robot model -->
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+  <!-- RViz2 -->
+  <exec_depend>rviz2</exec_depend>
+
+  <!-- ===================================================================
+       Test dependencies
+       =================================================================== -->
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

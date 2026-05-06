@@ -1,0 +1,110 @@
+# rtabmap_cave.yaml
+# ==================
+# RTAB-Map parameters tuned for 3-D LiDAR SLAM in cave / underground
+# environments.  Used by slam_rtabmap.launch.py.
+#
+# Reference: https://github.com/introlab/rtabmap_ros
+# Parameter guide: http://wiki.ros.org/rtabmap_ros/Tutorials/SetupOnYourRobot
+#
+# Cave-specific tuning rationale
+# --------------------------------
+#  * Long-range loop closure search needed (repeated geometry, darkness)
+#  * ICP-based loop closure (no visual features underground)
+#  * Aggressive memory management to handle long explorations
+#  * Robust graph optimisation (g2o) with outlier rejection
+
+rtabmap:
+  ros__parameters:
+
+    # ── Topic / frame configuration ───────────────────────────────────────
+    frame_id:          "base_link"
+    odom_frame_id:     "odom"
+    map_frame_id:      "map"
+    subscribe_scan_cloud: true
+    subscribe_depth:   false
+    subscribe_rgb:     false
+
+    # ── Database ──────────────────────────────────────────────────────────
+    database_path: "/tmp/rtabmap.db"
+
+    # ── Memory management ─────────────────────────────────────────────────
+    # Short-term memory size: number of recent nodes kept in RAM
+    # Larger values allow more recent-history loop closure but use more RAM
+    Mem/STMSize: "30"
+
+    # Keep nodes that are not linked (important in dead-end passages)
+    Mem/NotLinkedNodesKept: "true"
+
+    # Reduce image signature size to save RAM (LiDAR-only, no images)
+    Mem/ImageKept:   "false"
+    Mem/DepthKept:   "false"
+    Kp/MaxFeatures:  "-1"
+
+    # ── RTAB-Map detection ────────────────────────────────────────────────
+    # Minimum similarity threshold for loop closure hypothesis acceptance
+    # Lower = more sensitive to potential loops (risk of false closures)
+    Rtabmap/LoopThr: "0.11"
+
+    # Loop closure detection rate: check every N seconds
+    # 1 Hz is sufficient for slow drone flight in caves
+    Rtabmap/DetectionRate: "1"
+
+    # No time limit on processing — caves can have slow computation
+    Rtabmap/TimeThr: "0"
+
+    # Use proximity detection (spatial check without visual overlap)
+    Rtabmap/ProximityBySpace:     "true"
+    Rtabmap/ProximityMaxGraphDepth: "0"
+    Rtabmap/ProximityPathMaxNeighbors: "10"
+
+    # ── Registration (loop closure refinement) ────────────────────────────
+    # Strategy 1 = ICP (required for LiDAR-only SLAM)
+    Reg/Strategy: "1"
+    Reg/Force3DoF: "false"   # keep full 6-DoF for 3-D cave mapping
+
+    # ── ICP for loop closure refinement ──────────────────────────────────
+    Icp/MaxCorrespondenceDistance: "1.5"
+    Icp/PointToPlane:              "true"
+    Icp/Iterations:                "30"
+    Icp/VoxelSize:                 "0.1"
+    # Minimum overlap required for a valid ICP loop closure (0–1)
+    # Lower threshold in caves since partial overlaps are common
+    Icp/MinCorrespondenceRatio:    "0.2"
+    Icp/MaxTranslation:            "3.0"
+    Icp/MaxRotation:               "1.57"   # ~90 deg
+
+    # ── 3-D occupancy grid ────────────────────────────────────────────────
+    Grid/3D:           "true"
+    Grid/CellSize:     "0.2"
+    Grid/RangeMax:     "30.0"
+    Grid/RayTracing:   "true"
+    Grid/GroundIsObstacle: "true"   # for drone: floor is also an obstacle
+
+    # ── Pose-graph optimiser ──────────────────────────────────────────────
+    # Strategy: 0=TORO, 1=g2o, 2=GTSAM, 3=Ceres
+    Optimizer/Strategy: "1"
+
+    # Robust kernels to downweight outlier loop closures
+    Optimizer/Robust: "true"
+    Optimizer/Epsilon: "0.0001"
+
+    # ── Scan Context-inspired descriptors ─────────────────────────────────
+    # RTAB-Map can use Scan Context for global descriptor matching
+    # Enable via the LiDAR descriptor module
+    Kp/DetectorStrategy: "9"     # 9 = KAZE-like LiDAR descriptor (RTAB-Map ≥ 0.21)
+
+    # ── Scan pre-processing ───────────────────────────────────────────────
+    # Normal estimation radius for ICP surface matching
+    Icp/PointToPlaneK:          "20"
+    Icp/PointToPlaneRadius:     "0.5"
+
+    # ── Loop closure search radius ────────────────────────────────────────
+    # Larger radius essential in caves where poses can revisit from far away
+    Rtabmap/ProximityPathMaxNeighbors: "20"
+    Rtabmap/LocalRadius:               "30.0"
+
+    # ── Visual vocabulary (disabled — LiDAR only) ─────────────────────────
+    Vis/MaxFeatures: "0"
+
+    # ── Logging ───────────────────────────────────────────────────────────
+    Rtabmap/SaveWMState: "false"

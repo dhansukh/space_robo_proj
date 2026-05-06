@@ -1,0 +1,6 @@
+[console_scripts]
+degeneracy_detector = slam_pipeline.degeneracy_detector:main
+map_saver = slam_pipeline.map_saver:main
+octomap_builder = slam_pipeline.octomap_builder:main
+simple_lidar_odom = slam_pipeline.simple_lidar_odom:main
+
